@@ -1,2 +1,0 @@
-rootProject.name = 'API_Gateway'
-include 'api-gateway', 'orders-service', 'products-service', 'users-service'
