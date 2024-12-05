@@ -1,0 +1,104 @@
+services:
+  mysql-users:
+    image: mysql:8.0
+    container_name: users-db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: usersdb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    networks:
+      - backend
+    restart: always
+
+  mysql-products:
+    image: mysql:8.0
+    container_name: products-db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: productsdb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3307:3306"
+    networks:
+      - backend
+    restart: always
+
+  mysql-orders:
+    image: mysql:8.0
+    container_name: orders-db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: ordersdb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3308:3306"
+    networks:
+      - backend
+    restart: always
+
+  users-service:
+    build: ./users-service
+    container_name: users-service
+    ports:
+      - "8081:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-users:3306/usersdb
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+    networks:
+      - backend
+    depends_on:
+      - mysql-users
+    restart: always
+
+  products-service:
+    build: ./products-service
+    container_name: products-service
+    ports:
+      - "8082:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-products:3306/productsdb
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+    networks:
+      - backend
+    depends_on:
+      - mysql-products
+    restart: always
+
+  orders-service:
+    build: ./orders-service
+    container_name: orders-service
+    ports:
+      - "8083:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-orders:3306/ordersdb
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+    networks:
+      - backend
+    depends_on:
+      - mysql-orders
+    restart: always
+
+  api-gateway:
+    build: ./api-gateway
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    networks:
+      - backend
+    depends_on:
+      - users-service
+      - products-service
+      - orders-service
+    restart: always
+
+networks:
+  backend:
+    driver: bridge
