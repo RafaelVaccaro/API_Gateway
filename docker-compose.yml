@@ -1,38 +1,40 @@
-version: '3.8'
-
 services:
-  mysql-users:
-    image: mysql:8.0
-    container_name: users-db
+
+  postgres-users-db:
+    image: postgres:13
+    container_name: postgres-users-db
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: usersdb
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      POSTGRES_DB: usersdb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5433:5432"
     networks:
       - backend
     restart: always
 
-  mysql-products:
-    image: mysql:8.0
-    container_name: products-db
+  postgres-products-db:
+    image: postgres:13
+    container_name: postgres-products-db
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: productsdb
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      POSTGRES_DB: productsdb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5434:5432"
     networks:
       - backend
     restart: always
 
-  mysql-orders:
-    image: mysql:8.0
-    container_name: orders-db
+  postgres-orders-db:
+    image: postgres:13
+    container_name: postgres-orders-db
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: ordersdb
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      POSTGRES_DB: ordersdb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5435:5432"
     networks:
       - backend
     restart: always
@@ -41,62 +43,45 @@ services:
     build: ./users-service
     container_name: users-service
     ports:
-      - "8081:8080"
+      - "8081:8081"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-users:3306/usersdb
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-users-db:5432/usersdb
       SPRING_DATASOURCE_USERNAME: user
       SPRING_DATASOURCE_PASSWORD: password
     networks:
       - backend
     depends_on:
-      - mysql-users
+      - postgres-users-db
     restart: always
 
   products-service:
     build: ./products-service
     container_name: products-service
     ports:
-      - "8082:8080"
+      - "8082:8082"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-products:3306/productsdb
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-products-db:5432/productsdb
       SPRING_DATASOURCE_USERNAME: user
       SPRING_DATASOURCE_PASSWORD: password
     networks:
       - backend
     depends_on:
-      - mysql-products
+      - postgres-products-db
     restart: always
 
   orders-service:
     build: ./orders-service
     container_name: orders-service
     ports:
-      - "8083:8080"
+      - "8083:8083"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-orders:3306/ordersdb
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-orders-db:5432/ordersdb
       SPRING_DATASOURCE_USERNAME: user
       SPRING_DATASOURCE_PASSWORD: password
     networks:
       - backend
     depends_on:
-      - mysql-orders
-    restart: always
-
-  api-gateway:
-    build: ./api-gateway
-    container_name: api-gateway
-    ports:
-      - "8080:8080"
-    environment:
-      USERS_SERVICE_URL: "http://users-service:8081"
-      PRODUCTS_SERVICE_URL: "http://products-service:8082"
-      ORDERS_SERVICE_URL: "http://orders-service:8083"
-    networks:
-      - backend
-    depends_on:
-      - users-service
-      - products-service
-      - orders-service
+      - postgres-orders-db
     restart: always
 
 networks:
