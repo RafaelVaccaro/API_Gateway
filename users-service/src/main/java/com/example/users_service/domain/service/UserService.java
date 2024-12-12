@@ -13,6 +13,10 @@ public class UserService {
     private final UserJPARepository userRepository;
 
     public void registrar(RegistroUserDTO registroUserDTO) {
+        if (userRepository.existsByEmail(registroUserDTO.email())) {
+            throw new IllegalArgumentException("E-mail já está registrado.");
+        }
         userRepository.save(new User(registroUserDTO));
     }
+
 }
