@@ -2,6 +2,7 @@ package com.example.users_service.infrastructure.entity;
 
 import com.example.users_service.domain.dto.RegistroUserDTO;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.*;
 
 @Table(name = "users")
@@ -24,11 +25,22 @@ public class User {
     private String email;
 
     @Column(name = "status", nullable = false)
-    private boolean status;
+    private Boolean status;
 
     public User(RegistroUserDTO dados) {
         this.name = dados.name();
         this.email = dados.email();
         this.status = true;  // Status iniciado como ativo (true)
     }
+
+    public void atualizarinfo(@Valid RegistroUserDTO registroUserDTO) {
+        if (registroUserDTO.name() != null)
+            this.name = registroUserDTO.name();
+        if (registroUserDTO.email() != null)
+            this.email = registroUserDTO.email();
+    }
+
+    public void desativar() {
+        this.status = false;
+}
 }
