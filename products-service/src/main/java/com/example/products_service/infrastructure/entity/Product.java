@@ -1,6 +1,6 @@
 package com.example.products_service.infrastructure.entity;
 
-import com.example.products_service.domain.dto.RegistroProductDTO;
+import com.example.products_service.domain.dto.RegistrarProductDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,11 +29,13 @@ public class Product {
     @Column(name = "stock", nullable = false)
     private Integer stock;
 
-    public Product(RegistroProductDTO registroProductDTO) {
-
+    public Product(RegistrarProductDTO registrarProductDTO) {
+        this.name = registrarProductDTO.name();
+        this.description = registrarProductDTO.description();
+        this.price = registrarProductDTO.price();
+        if (registrarProductDTO.stock() != null)
+            this.stock = registrarProductDTO.stock();
+        else
+            this.stock = 0;
     }
-
-
-
-
 }

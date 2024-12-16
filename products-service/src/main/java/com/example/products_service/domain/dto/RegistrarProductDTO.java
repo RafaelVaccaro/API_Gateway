@@ -1,9 +1,10 @@
 package com.example.products_service.domain.dto;
 
-public record RegistroProductDTO(
-        Long id,
+public record RegistrarProductDTO(
+
         String name,
         String description,
         Double price,
-        Integer stock) {
+        Integer stock
+) {
 }
