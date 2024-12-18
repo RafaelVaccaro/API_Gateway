@@ -14,29 +14,33 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final UserJPARepository userRepository;
+    private final UserJPARepository userJPARepository;
 
     public User registrar(RegistroUserDTO registroUserDTO) {
-        if (userRepository.existsByEmail(registroUserDTO.email())) {
+        if (userJPARepository.existsByEmail(registroUserDTO.email())) {
             throw new IllegalArgumentException("E-mail já está registrado.");
         }
-        return userRepository.save(new User(registroUserDTO));
+        return userJPARepository.save(new User(registroUserDTO));
     }
 
     public Page<ListarUserDTO> listar(Pageable pageable) {
-        return userRepository.findAllByStatusTrue(pageable).map(ListarUserDTO::new);
+        return userJPARepository.findAllByStatusTrue(pageable).map(ListarUserDTO::new);
     }
 
 
     public RegistroUserDTO atualizar(@Valid RegistroUserDTO registroUserDTO, Long id) {
-        User user = userRepository.getReferenceById(id);
+        User user = userJPARepository.getReferenceById(id);
         user.atualizarinfo(registroUserDTO);
 
         return RegistroUserDTO.toDTO(user);
     }
 
     public void desativar(Long id) {
-        User user = userRepository.getReferenceById(id);
+        User user = userJPARepository.getReferenceById(id);
         user.desativar();
+    }
+
+    public boolean validarUserPorId(Long id) {
+        return userJPARepository.existsById(id);
     }
 }

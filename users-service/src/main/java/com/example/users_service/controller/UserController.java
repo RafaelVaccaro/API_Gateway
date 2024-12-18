@@ -42,5 +42,10 @@ public class UserController {
         userService.desativar(id);
     }
 
+    @GetMapping("/{id}")
+    public boolean validarUserPorId(@PathVariable Long id) {
+        return userService.validarUserPorId(id);
+    }
+
 
 }

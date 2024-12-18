@@ -28,7 +28,7 @@ public class ProductController {
         return productService.listar(pageable);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/detalhamento/{id}")
     public DetalhamentoProductDTO detalharProduct(@PathVariable Long id) {
         return productService.detalharProduto(id);
     }
@@ -37,4 +37,11 @@ public class ProductController {
     public void deletar(@PathVariable Long id) {
         productService.deletar(id);
     }
+
+    @GetMapping("/{id}")
+    public boolean validarProductPorId(@PathVariable Long id) {
+        return productService.validarProductPorId(id);
+    }
 }
+
+//RestTemplate

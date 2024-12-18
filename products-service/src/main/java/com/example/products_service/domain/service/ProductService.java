@@ -30,6 +30,10 @@ public class ProductService {
 
     public void deletar(Long id) {
         productJPARepository.deleteById(id);
+     }
+
+    public boolean validarProductPorId(Long id) {
+        return productJPARepository.existsById(id);
     }
 
 }
