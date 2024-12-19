@@ -5,6 +5,7 @@ import com.example.products_service.domain.dto.ListarProductDTO;
 import com.example.products_service.domain.dto.RegistrarProductDTO;
 import com.example.products_service.infrastructure.entity.Product;
 import com.example.products_service.infrastructure.repository.ProductJPARepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,6 +35,22 @@ public class ProductService {
 
     public boolean validarProductPorId(Long id) {
         return productJPARepository.existsById(id);
+    }
+
+    public Double getPricePorId(Long id) {
+        return productJPARepository.getReferenceById(id).getPrice();
+    }
+
+    public void subStock(Long id, Integer quantity) {
+        Product product = productJPARepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Produto com ID " + id + " não encontrado"));
+
+        if (product.getStock() < quantity) {
+            throw new IllegalArgumentException("Estoque insuficiente para o produto com ID " + id);
+        }
+
+        product.setStock(product.getStock() - quantity);
+        productJPARepository.save(product);
     }
 
 }

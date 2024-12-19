@@ -1,10 +1,10 @@
 package com.example.orders_service.infrastructure.entity;
-import com.example.orders_service.domain.dto.RegistroOrderDTO;
-import com.example.orders_service.domain.dto.RegistroOrderItemDTO;
+
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
-import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Table(name = "orders")
@@ -32,6 +32,10 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems;
 
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
     public Order(Long userId, Double totalPrice, List<OrderItem> orderItems) {
         this.userId = userId;
         this.totalPrice = totalPrice;
@@ -44,4 +48,3 @@ public class Order {
         }
     }
 }
-

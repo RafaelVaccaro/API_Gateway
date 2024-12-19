@@ -46,6 +46,4 @@ public class UserController {
     public boolean validarUserPorId(@PathVariable Long id) {
         return userService.validarUserPorId(id);
     }
-
-
 }

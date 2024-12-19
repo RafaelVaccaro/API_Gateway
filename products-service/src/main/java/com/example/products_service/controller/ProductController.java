@@ -5,6 +5,7 @@ import com.example.products_service.domain.dto.ListarProductDTO;
 import com.example.products_service.domain.dto.RegistrarProductDTO;
 import com.example.products_service.domain.service.ProductService;
 import com.example.products_service.infrastructure.entity.Product;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +20,7 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping
+    @Transactional
     public Product registrar(@RequestBody RegistrarProductDTO registrarProductDTO) {
         return productService.registrar(registrarProductDTO);
     }
@@ -34,6 +36,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
+    @Transactional
     public void deletar(@PathVariable Long id) {
         productService.deletar(id);
     }
@@ -41,6 +44,17 @@ public class ProductController {
     @GetMapping("/{id}")
     public boolean validarProductPorId(@PathVariable Long id) {
         return productService.validarProductPorId(id);
+    }
+
+    @GetMapping("/price/{id}")
+    public Double getPricePorId(@PathVariable Long id) {
+        return productService.getPricePorId(id);
+    }
+
+    @PostMapping("/{id}/{qtd}")
+    @Transactional
+    public void subStock(@PathVariable Long id, @PathVariable Integer qtd) {
+        productService.subStock(id, qtd);
     }
 }
 

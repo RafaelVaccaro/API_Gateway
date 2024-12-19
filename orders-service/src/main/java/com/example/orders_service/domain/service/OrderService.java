@@ -1,5 +1,6 @@
 package com.example.orders_service.domain.service;
 
+import com.example.orders_service.domain.dto.ListarOrderDTO;
 import com.example.orders_service.domain.dto.RegistroOrderDTO;
 import com.example.orders_service.domain.dto.RegistroOrderItemDTO;
 import com.example.orders_service.infrastructure.entity.Order;
@@ -10,6 +11,8 @@ import com.example.orders_service.infrastructure.repository.OrderItemJPAReposito
 import com.example.orders_service.infrastructure.repository.OrderJPARepository;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.weaver.ast.Or;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -43,7 +46,7 @@ public class OrderService {
             }
 
             // Calcula o preço do item
-            double itemPrice = itemDTO.price() * itemDTO.quantity();
+            double itemPrice = productConsumerService.getProductPrice(itemDTO.productId()) * itemDTO.quantity();
             totalPrice += itemPrice;
 
             // Cria o OrderItem
@@ -63,5 +66,9 @@ public class OrderService {
         }
 
         return savedOrder;
+    }
+
+    public Page<ListarOrderDTO> listarOrders(Pageable pageable) {
+        return orderJPARepository.findAll(pageable).map(ListarOrderDTO::new);
     }
 }

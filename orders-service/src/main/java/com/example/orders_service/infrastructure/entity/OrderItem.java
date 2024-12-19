@@ -26,13 +26,9 @@ public class OrderItem {
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
-    @Column(name = "price", nullable = false)
-    private Double price;
-
     public OrderItem(RegistroOrderItemDTO registroOrderItemDTO) {
         this.productId = registroOrderItemDTO.productId();
         this.quantity = registroOrderItemDTO.quantity();
-        this.price = registroOrderItemDTO.price();
     }
 
 }
