@@ -50,7 +50,6 @@ public class ProductService {
         }
 
         product.setStock(product.getStock() - quantity);
-        productJPARepository.save(product);
     }
 
 }

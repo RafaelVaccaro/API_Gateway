@@ -51,10 +51,10 @@ public class ProductController {
         return productService.getPricePorId(id);
     }
 
-    @PostMapping("/{id}/{qtd}")
+    @PutMapping("/stock/{id}")
     @Transactional
-    public void subStock(@PathVariable Long id, @PathVariable Integer qtd) {
-        productService.subStock(id, qtd);
+    public void subStock(@PathVariable Long id, @RequestBody Integer quantity) {
+        productService.subStock(id, quantity);
     }
 }
 

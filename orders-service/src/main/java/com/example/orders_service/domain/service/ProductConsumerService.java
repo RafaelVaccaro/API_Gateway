@@ -34,5 +34,14 @@ public class ProductConsumerService {
         }
     }
 
-    public void
+    public void subStock(Long id, Integer quantity) {
+        String url = productServiceURL + "/stock/" + id;
+        try {
+            restTemplate.put(url, quantity);
+        } catch (HttpClientErrorException.NotFound e) {
+            throw new RuntimeException("Produto com ID " + id + " não encontrado");
+        } catch (RestClientException e) {
+            throw new RuntimeException("Erro ao atualizar estoque do produto com ID " + id);
+        }
+    }
 }

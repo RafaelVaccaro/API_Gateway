@@ -27,4 +27,14 @@ public class OrderController {
     public Page<ListarOrderDTO> listarOrders(Pageable pageable) {
         return orderService.listarOrders(pageable);
     }
+
+    @PutMapping("/concluir/{id}")
+    public void concluirOrder(@PathVariable Long id) {
+        orderService.concluirOrder(id);
+    }
+
+    @PutMapping("/cancelar/{id}")
+    public void cancelarOrder(@PathVariable Long id) {
+        orderService.cancelarOrder(id);
+    }
 }
