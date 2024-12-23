@@ -28,13 +28,8 @@ public class OrderController {
         return orderService.listarOrders(pageable);
     }
 
-    @PutMapping("/concluir/{id}")
-    public void concluirOrder(@PathVariable Long id) {
-        orderService.concluirOrder(id);
-    }
-
-    @PutMapping("/cancelar/{id}")
-    public void cancelarOrder(@PathVariable Long id) {
-        orderService.cancelarOrder(id);
+    @DeleteMapping("/{id}")
+    public void deletarOrder(@PathVariable Long id) {
+        orderService.deletarOrder(id);
     }
 }

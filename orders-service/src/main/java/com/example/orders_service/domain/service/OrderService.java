@@ -7,13 +7,13 @@ import com.example.orders_service.infrastructure.entity.*;
 import com.example.orders_service.infrastructure.repository.OrderItemJPARepository;
 import com.example.orders_service.infrastructure.repository.OrderJPARepository;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,8 +24,10 @@ public class OrderService {
     private final ProductConsumerService productConsumerService;
     private final UserConsumerService userConsumerService;
 
-    public Order registrarOrder(RegistroOrderDTO registroOrderDTO) {
+    public void registrarOrder(RegistroOrderDTO registroOrderDTO) {
 
+
+        System.out.println("Verificando usuário com ID: " + registroOrderDTO.userId());
         if (!userConsumerService.validarUserPorId(registroOrderDTO.userId())) {
             throw new UserNotFoundException("User com ID: " + registroOrderDTO.userId() + " não existe");
         }
@@ -57,22 +59,24 @@ public class OrderService {
             orderItemJPARepository.save(orderItem);
         }
 
-        return savedOrder;
     }
 
     public Page<ListarOrderDTO> listarOrders(Pageable pageable) {
+        // Filtra e deleta pedidos com usuários inválidos diretamente no banco de dados
+        List<Order> ordersToDelete = orderJPARepository.findAll()
+                .stream()
+                .filter(order -> !userConsumerService.validarUserPorId(order.getUserId()))
+                .collect(Collectors.toList());
+
+        // Deleta os pedidos com usuários inválidos
+        orderJPARepository.deleteAll(ordersToDelete);
+
+        // Retorna os pedidos restantes com paginação
         return orderJPARepository.findAll(pageable).map(ListarOrderDTO::new);
     }
 
-    public void concluirOrder(Long id) {
-        Order order = orderJPARepository.getReferenceById(id);
-        order.setStatus(Status.CONCLUIDO);
-        orderJPARepository.save(order);
-    }
 
-    public void cancelarOrder(Long id) {
-        Order order = orderJPARepository.getReferenceById(id);
-        order.setStatus(Status.CANCELADO);
-        orderJPARepository.save(order);
+    public void deletarOrder(Long id) {
+        orderJPARepository.deleteById(id);
     }
 }

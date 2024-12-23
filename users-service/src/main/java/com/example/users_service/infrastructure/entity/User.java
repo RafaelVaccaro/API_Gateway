@@ -24,13 +24,9 @@ public class User {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "status", nullable = false)
-    private Boolean status;
-
     public User(RegistroUserDTO dados) {
         this.name = dados.name();
         this.email = dados.email();
-        this.status = true;  // Status iniciado como ativo (true)
     }
 
     public void atualizarinfo(@Valid RegistroUserDTO registroUserDTO) {
@@ -39,8 +35,4 @@ public class User {
         if (registroUserDTO.email() != null)
             this.email = registroUserDTO.email();
     }
-
-    public void desativar() {
-        this.status = false;
-}
 }

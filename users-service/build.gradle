@@ -9,7 +9,7 @@ version = '0.0.1-SNAPSHOT'
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
+		languageVersion = JavaLanguageVersion.of(17) // Configuração para usar o JDK 17
 	}
 }
 
@@ -20,25 +20,27 @@ configurations {
 }
 
 repositories {
-	mavenCentral()
+	mavenCentral() // Repositório Maven Central
 }
 
 dependencies {
+	// Dependências principais do projeto
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	runtimeOnly 'org.postgresql:postgresql'  // Usar o driver do PostgreSQL
+	implementation 'org.postgresql:postgresql' // Driver do PostgreSQL gerenciado pelo Spring Boot
 
+	// Lombok para evitar boilerplate
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	// Ferramentas de desenvolvimento
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	// Dependências para testes
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+	useJUnitPlatform() // Configuração para usar o JUnit 5
 }
-
-
-

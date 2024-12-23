@@ -14,5 +14,4 @@ public interface UserJPARepository extends JpaRepository<User, Long> {
 
     boolean existsByEmail(String email);
 
-    Page<User> findAllByStatusTrue(Pageable pageable);
 }

@@ -38,12 +38,12 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public void remover(@PathVariable Long id) {
-        userService.desativar(id);
+    public void deletarUser(@PathVariable Long id) {
+        userService.deletarUser(id);
     }
 
     @GetMapping("/{id}")
-    public boolean validarUserPorId(@PathVariable Long id) {
+    public boolean validarUserPorId(@PathVariable Long id) throws Exception {
         return userService.validarUserPorId(id);
     }
 }

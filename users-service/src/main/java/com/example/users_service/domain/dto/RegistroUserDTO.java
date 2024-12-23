@@ -7,6 +7,7 @@ import lombok.Builder;
 
 @Builder
 public record RegistroUserDTO(
+
         String name,
 
         @Email

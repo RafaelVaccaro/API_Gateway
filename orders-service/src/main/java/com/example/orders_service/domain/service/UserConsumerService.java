@@ -15,10 +15,10 @@ public class UserConsumerService {
     public boolean validarUserPorId(Long id) {
         try {
             String url = userServiceURL + "/" + id;
-            restTemplate.getForObject(url, Void.class); // Apenas verifica se o user existe
+            restTemplate.getForObject(url, Void.class); // Apenas verifica se o usuário existe
             return true;
-        } catch (HttpClientErrorException.NotFound e) {
-            return false;
+        } catch (Exception e) {
+            return false; // Usuário não encontrado
         }
     }
 

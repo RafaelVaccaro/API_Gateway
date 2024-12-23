@@ -24,9 +24,8 @@ public class UserService {
     }
 
     public Page<ListarUserDTO> listar(Pageable pageable) {
-        return userJPARepository.findAllByStatusTrue(pageable).map(ListarUserDTO::new);
+        return userJPARepository.findAll(pageable).map(ListarUserDTO::new);
     }
-
 
     public RegistroUserDTO atualizar(@Valid RegistroUserDTO registroUserDTO, Long id) {
         User user = userJPARepository.getReferenceById(id);
@@ -35,12 +34,14 @@ public class UserService {
         return RegistroUserDTO.toDTO(user);
     }
 
-    public void desativar(Long id) {
-        User user = userJPARepository.getReferenceById(id);
-        user.desativar();
+    public void deletarUser(Long id) {
+        userJPARepository.deleteById(id);
     }
 
-    public boolean validarUserPorId(Long id) {
-        return userJPARepository.existsById(id);
+    public boolean validarUserPorId(Long id) throws Exception {
+        if (!userJPARepository.existsById(id)) {
+            throw new Exception("Usuario nao encontrado");
+        }
+        return true; // Retorna true se o usuário existir
     }
 }
