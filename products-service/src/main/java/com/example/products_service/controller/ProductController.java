@@ -13,7 +13,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("product")
+@RequestMapping("/product")
 @RequiredArgsConstructor
 public class ProductController {
 
@@ -28,11 +28,6 @@ public class ProductController {
     @GetMapping
     public Page<ListarProductDTO> listar(@PageableDefault(size = 10, sort = {"id"}) Pageable pageable) {
         return productService.listar(pageable);
-    }
-
-    @GetMapping("/detalhamento/{id}")
-    public DetalhamentoProductDTO detalharProduct(@PathVariable Long id) {
-        return productService.detalharProduto(id);
     }
 
     @DeleteMapping("/{id}")

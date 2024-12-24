@@ -25,10 +25,6 @@ public class ProductService {
         return productJPARepository.findAll(pageable).map(ListarProductDTO::new);
     }
 
-    public DetalhamentoProductDTO detalharProduto(Long id) {
-        return DetalhamentoProductDTO.toDto(productJPARepository.getReferenceById(id));
-    }
-
     public void deletar(Long id) {
         productJPARepository.deleteById(id);
      }

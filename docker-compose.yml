@@ -39,6 +39,24 @@ services:
       - backend
     restart: always
 
+  api-gateway:
+    build: ./api-gateway
+    container_name: api-gateway
+    ports:
+      - "8080:8080" # Porta para expor o Gateway
+    networks:
+      - backend
+    depends_on:
+      - users-service
+      - products-service
+      - orders-service
+    environment:
+    # Se necessário, adicione variáveis para o Gateway
+      SPRING_CLOUD_GATEWAY_ROUTES_USERS: http://users-service:8081
+      SPRING_CLOUD_GATEWAY_ROUTES_PRODUCTS: http://products-service:8082
+      SPRING_CLOUD_GATEWAY_ROUTES_ORDERS: http://orders-service:8083
+    restart: always
+
   users-service:
     build: ./users-service
     container_name: users-service
