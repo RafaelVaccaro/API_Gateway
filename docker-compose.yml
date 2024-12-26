@@ -1,107 +1,130 @@
+# Definição dos serviços a serem executados no Docker Compose
+
 services:
 
+  # Serviço para o banco de dados de usuários
   postgres-users-db:
     image: postgres:13
     container_name: postgres-users-db
     environment:
-      POSTGRES_DB: usersdb
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
+      # Variáveis de ambiente para configurar o banco de dados
+      POSTGRES_DB: usersdb         # Nome do banco de dados
+      POSTGRES_USER: user          # Usuário para acesso ao banco
+      POSTGRES_PASSWORD: password  # Senha para o usuário
+    # Mapeamento de portas: Expondo a porta 5433 do host para a 5432 do container
     ports:
       - "5433:5432"
+    # Define a rede à qual o serviço pertence
     networks:
       - backend
+    # Garantir que o serviço reinicie automaticamente
     restart: always
 
+  # Serviço para o banco de dados de produtos
   postgres-products-db:
     image: postgres:13
     container_name: postgres-products-db
     environment:
-      POSTGRES_DB: productsdb
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
+      POSTGRES_DB: productsdb       # Nome do banco de dados
+      POSTGRES_USER: user           # Usuário para acesso ao banco
+      POSTGRES_PASSWORD: password   # Senha para o usuário
     ports:
       - "5434:5432"
     networks:
       - backend
     restart: always
 
+  # Serviço para o banco de dados de pedidos
   postgres-orders-db:
     image: postgres:13
     container_name: postgres-orders-db
     environment:
-      POSTGRES_DB: ordersdb
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ordersdb         # Nome do banco de dados
+      POSTGRES_USER: user           # Usuário para acesso ao banco
+      POSTGRES_PASSWORD: password   # Senha para o usuário
     ports:
       - "5435:5432"
     networks:
       - backend
     restart: always
 
+  # Serviço de API Gateway
   api-gateway:
+    # Build do gateway a partir do diretório local
     build: ./api-gateway
     container_name: api-gateway
+    # Porta exposta para acessar o Gateway
     ports:
-      - "8080:8080" # Porta para expor o Gateway
+      - "8080:8080"
     networks:
       - backend
+    # Dependências para garantir a ordem de inicialização dos serviços
     depends_on:
       - users-service
       - products-service
       - orders-service
     environment:
-    # Se necessário, adicione variáveis para o Gateway
+      # Variáveis de ambiente para o Gateway, definindo as rotas para os serviços
       SPRING_CLOUD_GATEWAY_ROUTES_USERS: http://users-service:8081
       SPRING_CLOUD_GATEWAY_ROUTES_PRODUCTS: http://products-service:8082
       SPRING_CLOUD_GATEWAY_ROUTES_ORDERS: http://orders-service:8083
     restart: always
 
+  # Serviço para o microserviço de usuários
   users-service:
     build: ./users-service
     container_name: users-service
     ports:
-      - "8081:8081"
+      - "8081:8081"  # Porta do serviço de usuários
     environment:
+      # Configurações do banco de dados para o serviço de usuários
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-users-db:5432/usersdb
       SPRING_DATASOURCE_USERNAME: user
       SPRING_DATASOURCE_PASSWORD: password
     networks:
       - backend
+    # O serviço de usuários depende do banco de dados de usuários
     depends_on:
       - postgres-users-db
     restart: always
 
+  # Serviço para o microserviço de produtos
   products-service:
     build: ./products-service
     container_name: products-service
     ports:
-      - "8082:8082"
+      - "8082:8082"  # Porta do serviço de produtos
     environment:
+      # Configurações do banco de dados para o serviço de produtos
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-products-db:5432/productsdb
       SPRING_DATASOURCE_USERNAME: user
       SPRING_DATASOURCE_PASSWORD: password
     networks:
       - backend
+    # O serviço de produtos depende do banco de dados de produtos
     depends_on:
       - postgres-products-db
     restart: always
 
+  # Serviço para o microserviço de pedidos
   orders-service:
     build: ./orders-service
     container_name: orders-service
     ports:
-      - "8083:8083"
+      - "8083:8083"  # Porta do serviço de pedidos
     environment:
+      # Configurações do banco de dados para o serviço de pedidos
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-orders-db:5432/ordersdb
       SPRING_DATASOURCE_USERNAME: user
       SPRING_DATASOURCE_PASSWORD: password
     networks:
       - backend
+    # O serviço de pedidos depende do banco de dados de pedidos
     depends_on:
       - postgres-orders-db
     restart: always
 
+# Definindo a rede para comunicação entre os serviços
 networks:
   backend:
-    driver: bridge
+    driver: bridge  # Usando a rede padrão "bridge" para comunicação entre containers
