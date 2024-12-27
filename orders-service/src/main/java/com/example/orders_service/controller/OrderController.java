@@ -15,7 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * Controlador para manipulação de pedidos.
+ * Controlador responsável pela gestão de pedidos.
+ * Exposição de endpoints REST para operações CRUD de pedidos.
  */
 @RestController
 @RequestMapping("/order")
@@ -26,6 +27,7 @@ public class OrderController {
 
     /**
      * Endpoint para registrar um novo pedido.
+     *
      * @param registroOrderDTO Dados do pedido a ser registrado.
      * @return O pedido registrado.
      */
@@ -38,6 +40,7 @@ public class OrderController {
 
     /**
      * Endpoint para listar os pedidos com paginação.
+     *
      * @param pageable Paginação dos pedidos.
      * @return Página de pedidos.
      */
@@ -48,6 +51,7 @@ public class OrderController {
 
     /**
      * Endpoint para deletar um pedido pelo seu ID.
+     *
      * @param id ID do pedido a ser deletado.
      */
     @DeleteMapping("/{id}")

@@ -6,12 +6,15 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * Serviço responsável por consumir as requisições do serviço de produtos.
+ */
 @Service
 @RequiredArgsConstructor
 public class ProductConsumerService {
 
     private final RestTemplate restTemplate;
-    private final String productServiceURL = "http://products-service:8082/product";
+    private final String productServiceURL = "http://products-service:8082/product"; // URL do serviço
 
     /**
      * Valida se o produto existe no serviço de produtos.

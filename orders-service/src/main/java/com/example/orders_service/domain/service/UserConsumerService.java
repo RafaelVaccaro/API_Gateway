@@ -6,12 +6,15 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * Serviço responsável por consumir as requisições do serviço de usuários.
+ */
 @Service
 @RequiredArgsConstructor
 public class UserConsumerService {
 
     private final RestTemplate restTemplate;
-    private final String userServiceURL = "http://users-service:8081/user";
+    private final String userServiceURL = "http://users-service:8081/user"; // URL do serviço
 
     /**
      * Verifica se o usuário existe no serviço de usuários.

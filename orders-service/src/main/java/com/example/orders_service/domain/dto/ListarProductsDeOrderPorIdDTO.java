@@ -10,8 +10,6 @@ import java.util.List;
  */
 @Builder
 public record ListarProductsDeOrderPorIdDTO(
-
-        // Lista de itens do pedido.
         List<OrderItem> orderItems
 ) {
 

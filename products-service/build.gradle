@@ -1,11 +1,11 @@
 plugins {
 	id 'java' // Plugin para compilar código Java
-	id 'org.springframework.boot' version '3.4.0' // Plugin do Spring Boot para criar uma aplicação Spring Boot
-	id 'io.spring.dependency-management' version '1.1.6' // Plugin de gerenciamento de dependências para usar o Spring Dependency Management
+	id 'org.springframework.boot' version '3.4.0' // Plugin Spring Boot para integração com o Spring Framework
+	id 'io.spring.dependency-management' version '1.1.6' // Plugin para gerenciar dependências de forma eficiente
 }
 
-group = 'com.example' // Define o grupo do projeto
-version = '0.0.1-SNAPSHOT' // Define a versão do projeto
+group = 'com.example' // Pacote base do projeto
+version = '0.0.1-SNAPSHOT' // Versão do projeto
 
 java {
 	toolchain {
@@ -15,32 +15,33 @@ java {
 
 configurations {
 	compileOnly {
-		extendsFrom annotationProcessor // Configuração para usar o Lombok com o annotationProcessor
+		extendsFrom annotationProcessor // Permite usar o Lombok durante a compilação
 	}
 }
 
+// Repositórios onde as dependências serão baixadas
 repositories {
-	mavenCentral() // Repositório Maven Central para buscar dependências
+	mavenCentral() // Repositório Maven Central
 }
 
 dependencies {
-	// Dependências principais do projeto
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // Starter para integração com JPA
-	implementation 'org.springframework.boot:spring-boot-starter-web' // Starter para aplicações web com Spring Boot
+	implementation 'org.springframework.boot:spring-boot-starter-web' // Starter para construir APIs Web com Spring MVC
 	implementation 'org.springframework.boot:spring-boot-starter-validation' // Starter para validação de dados com Hibernate Validator
-	implementation 'org.postgresql:postgresql' // Driver do PostgreSQL gerenciado pelo Spring Boot
+	implementation 'org.postgresql:postgresql' // Driver do PostgreSQL para conectar ao banco de dados
 
 	// Lombok para evitar boilerplate
 	compileOnly 'org.projectlombok:lombok' // Lombok apenas em tempo de compilação
-	annotationProcessor 'org.projectlombok:lombok' // Processador de anotações Lombok
+	annotationProcessor 'org.projectlombok:lombok' // Processador de anotações Lombok durante a compilação
 
-	// Ferramentas de desenvolvimento
+	// Dependência para facilitar o desenvolvimento com hot reloading
 	developmentOnly 'org.springframework.boot:spring-boot-devtools' // Ferramentas de desenvolvimento como live reload
 
 	// Dependências para testes
 	testImplementation 'org.springframework.boot:spring-boot-starter-test' // Starter para testes com JUnit, Mockito, etc.
 }
 
+// Configuração da tarefa de teste
 tasks.named('test') {
-	useJUnitPlatform() // Configuração para usar o JUnit 5 para os testes
+	useJUnitPlatform() // Configuração para usar o JUnit 5, plataforma de testes padrão do Spring Boot
 }

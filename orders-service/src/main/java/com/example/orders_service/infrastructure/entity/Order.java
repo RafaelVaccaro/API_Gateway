@@ -4,37 +4,40 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * Representa um pedido feito por um usuário.
+ * Entidade que representa um pedido no banco de dados.
+ * Mapeada com a tabela "orders".
  */
-@Table(name = "orders")
-@Entity(name = "Order")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(of = "id")
+@Table(name = "orders") // Define o nome da tabela no banco de dados.
+@Entity(name = "Order") // Define o nome da entidade para o Hibernate
+@Data // Gera getters, setters, toString, equals, hashCode e construtor padrão automaticamente.
+@NoArgsConstructor // Gera um construtor sem argumentos.
+@AllArgsConstructor // Gera um construtor com todos os argumentos.
+@EqualsAndHashCode(of = "id") // Gera métodos equals e hashCode baseados no campo "id".
 public class Order {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id // Marca o campo id como a chave primária.
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Define a geração automática do ID
     private Long id;
 
-    @Column(name = "userId", nullable = false)
+    @Column(name = "userId", nullable = false) // Define a coluna 'userId' que não pode ser nula.
     private Long userId;
 
-    @Column(name = "total_price", nullable = false)
+    @Column(name = "total_price", nullable = false) // Define a coluna 'total_price' que não pode ser nula.
     private Double totalPrice;
 
+    // Define relacionamento OneToMany, mapeado pelo campo "order" na classe OrderItem
+    // Propaga todas as operações (persist, merge, remove, etc.) para os itens
+    // Remove automaticamente itens órfãos que saírem da lista
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference // Gerencia a referência JSON para evitar ciclos na serialização
     private List<OrderItem> orderItems;
 
-    @CreationTimestamp
-    @Column(name = "created_at", nullable = false, updatable = false)
+    @CreationTimestamp // Marca o campo com o timestamp de criação automaticamente
+    @Column(name = "created_at", nullable = false, updatable = false) // Define o nome da coluna como "created_at", tornando-a não-nula e não atualizável
     private LocalDateTime createdAt;
 
     /**

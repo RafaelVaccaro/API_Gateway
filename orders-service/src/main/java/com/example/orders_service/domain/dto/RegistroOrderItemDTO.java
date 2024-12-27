@@ -7,11 +7,7 @@ import jakarta.validation.constraints.NotNull;
  * DTO usado para registrar um item no pedido.
  */
 public record RegistroOrderItemDTO(
-
-        // Identificador do produto, não pode ser nulo.
-        @NotNull Long productId,
-
-        // Quantidade do produto, não pode ser nula.
-        @NotNull Integer quantity
+        Long productId,
+        Integer quantity
 ) {
 }

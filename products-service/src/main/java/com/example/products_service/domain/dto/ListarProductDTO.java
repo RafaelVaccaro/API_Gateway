@@ -10,7 +10,8 @@ public record ListarProductDTO(
         String name,
         String description,
         Double price,
-        Integer stock) {
+        Integer stock
+) {
 
     /**
      * Converte uma entidade Product para o DTO ListarProductDTO.

@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.*;
  * Controlador responsável pela gestão de usuários.
  * Exposição de endpoints REST para operações CRUD de usuários.
  */
-@RestController // Indica que essa classe é um controlador REST no Spring.
-@RequestMapping("/user") // Define a URL base para os endpoints dessa classe.
-@RequiredArgsConstructor // Garante que a injeção de dependência será feita automaticamente no construtor.
+@RestController
+@RequestMapping("/user")
+@RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService; // A dependência do serviço que lida com a lógica de usuários.
+    private final UserService userService;
 
     /**
      * Endpoint para registrar um novo usuário.
@@ -28,8 +28,8 @@ public class UserController {
      * @param registroUserDTO Dados do usuário a ser registrado.
      * @return O usuário recém-criado.
      */
-    @PostMapping // Define que esse método responderá às requisições POST para a URL '/user'.
-    @Transactional // Indica que a operação deve ser realizada dentro de uma transação.
+    @PostMapping
+    @Transactional
     public User registrar(@RequestBody @Valid RegistroUserDTO registroUserDTO) {
         return userService.registrar(registroUserDTO);
     }
@@ -50,7 +50,7 @@ public class UserController {
      *
      * @param id ID do usuário a ser deletado.
      */
-    @DeleteMapping("/{id}") // Define que esse método responderá às requisições DELETE para a URL '/user/{id}'.
+    @DeleteMapping("/{id}")
     public void deletarUser(@PathVariable Long id) {
         userService.deletarUser(id);
     }
@@ -61,7 +61,7 @@ public class UserController {
      * @param id ID do usuário a ser verificado.
      * @return true se o usuário existir, caso contrário retorna 404.
      */
-    @GetMapping("/{id}") // Define que esse método responderá às requisições GET para a URL '/user/{id}'.
+    @GetMapping("/{id}")
     public boolean validarUserPorId(@PathVariable Long id) throws Exception {
         return userService.validarUserPorId(id);
     }

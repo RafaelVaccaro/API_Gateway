@@ -5,13 +5,14 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 
-@Builder // Gera um builder para a classe, facilitando a criação de objetos com um padrão fluente.
+/**
+ * DTO utilizado para registrar um novo usuário.
+ */
+@Builder
 public record RegistroUserDTO(
-
-        String name, // Nome do usuário.
-
-        @Email // Valida se o valor do campo está no formato de um endereço de email.
-        String email // Email do usuário.
+        String name,
+        @Email
+        String email
 ) {
         /**
          * Converte uma entidade User para um DTO RegistroUserDTO.
@@ -21,8 +22,8 @@ public record RegistroUserDTO(
          */
         public static RegistroUserDTO toDTO(User user) {
                 return RegistroUserDTO.builder() // Inicia o builder para criar uma instância de RegistroUserDTO.
-                        .name(user.getName()) // Define o campo `name` com o valor da entidade.
-                        .email(user.getEmail()) // Define o campo `email` com o valor da entidade.
+                        .name(user.getName())
+                        .email(user.getEmail())
                         .build(); // Constrói o objeto DTO.
         }
 }

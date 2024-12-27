@@ -7,10 +7,10 @@ import java.time.LocalDateTime;
  * DTO para listar informações de um pedido.
  */
 public record ListarOrderDTO(
-        Long id,            // ID do pedido
-        Long userId,       // ID do usuário associado ao pedido
-        Double totalPrice, // Preço total do pedido
-        LocalDateTime createdAt // Data de criação do pedido
+        Long id,
+        Long userId,
+        Double totalPrice,
+        LocalDateTime createdAt
 ) {
 
     /**

@@ -17,7 +17,7 @@ services:
     # Define a rede à qual o serviço pertence
     networks:
       - backend
-    # Garantir que o serviço reinicie automaticamente
+    # Garantir que o serviço reinicie automaticamente em caso de erro.
     restart: always
 
   # Serviço para o banco de dados de produtos
@@ -25,9 +25,9 @@ services:
     image: postgres:13
     container_name: postgres-products-db
     environment:
-      POSTGRES_DB: productsdb       # Nome do banco de dados
-      POSTGRES_USER: user           # Usuário para acesso ao banco
-      POSTGRES_PASSWORD: password   # Senha para o usuário
+      POSTGRES_DB: productsdb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
     ports:
       - "5434:5432"
     networks:
@@ -39,9 +39,9 @@ services:
     image: postgres:13
     container_name: postgres-orders-db
     environment:
-      POSTGRES_DB: ordersdb         # Nome do banco de dados
-      POSTGRES_USER: user           # Usuário para acesso ao banco
-      POSTGRES_PASSWORD: password   # Senha para o usuário
+      POSTGRES_DB: ordersdb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
     ports:
       - "5435:5432"
     networks:
@@ -101,7 +101,6 @@ services:
       SPRING_DATASOURCE_PASSWORD: password
     networks:
       - backend
-    # O serviço de produtos depende do banco de dados de produtos
     depends_on:
       - postgres-products-db
     restart: always

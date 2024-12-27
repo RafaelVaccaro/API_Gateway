@@ -2,7 +2,14 @@ package com.example.users_service.domain.dto;
 
 import com.example.users_service.infrastructure.entity.User;
 
-public record ListarUserDTO(Long id, String nome, String email) {
+/**
+ * DTO utilizado para listar informações de usuários.
+ */
+public record ListarUserDTO(
+        Long id,
+        String nome,
+        String email
+) {
 
     /**
      * Construtor que converte uma entidade User em um DTO ListarUserDTO.

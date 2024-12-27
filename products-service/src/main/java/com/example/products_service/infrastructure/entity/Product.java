@@ -5,68 +5,43 @@ import jakarta.persistence.*;
 import lombok.*;
 
 /**
- * Representa um produto no sistema, com informações sobre nome, descrição, preço e estoque.
- * Esta classe está mapeada para a tabela 'products' no banco de dados.
+ * Entidade que representa um produto no banco de dados.
+ * Mapeada com a tabela "products".
  */
-@Table(name = "products") // Define a tabela no banco de dados que esta entidade irá mapear
+@Table(name = "products") // Define o nome da tabela no banco de dados.
 @Entity(name = "Product") // Define o nome da entidade para o Hibernate
-@Getter // Gera automaticamente os métodos de getter para os campos
-@Setter // Gera automaticamente os métodos de setter para os campos
-@NoArgsConstructor // Gera um construtor sem parâmetros
-@AllArgsConstructor // Gera um construtor com todos os parâmetros
-@EqualsAndHashCode(of = "id") // Gera os métodos equals e hashCode baseados no campo 'id'
+@Data // Gera getters, setters, toString, equals, hashCode e construtor padrão automaticamente.
+@NoArgsConstructor // Gera um construtor sem argumentos.
+@AllArgsConstructor // Gera um construtor com todos os argumentos.
+@EqualsAndHashCode(of = "id") // Gera métodos equals e hashCode baseados no campo "id".
 public class Product {
 
-    /**
-     * Identificador único do produto.
-     * Este campo é a chave primária da tabela 'products' e é gerado automaticamente.
-     */
-    @Id // Marca este campo como chave primária
+    @Id // Marca o campo id como a chave primária.
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Define a geração automática do ID
     private Long id;
 
-    /**
-     * Nome do produto.
-     * Este campo não pode ser nulo, conforme a configuração da tabela no banco de dados.
-     */
-    @Column(name = "name", nullable = false) // Define a coluna 'name' na tabela
+    @Column(name = "name", nullable = false) // Define a coluna 'name' que não pode ser nula.
     private String name;
 
-    /**
-     * Descrição do produto.
-     * Este campo não pode ser nulo, conforme a configuração da tabela no banco de dados.
-     */
-    @Column(name = "description", nullable = false) // Define a coluna 'description' na tabela
+    @Column(name = "description", nullable = false) // Define a coluna 'description' que não pode ser nula.
     private String description;
 
-    /**
-     * Preço do produto.
-     * Este campo não pode ser nulo, conforme a configuração da tabela no banco de dados.
-     */
-    @Column(name = "price", nullable = false) // Define a coluna 'price' na tabela
+    @Column(name = "price", nullable = false) // Define a coluna 'price' que não pode ser nula.
     private Double price;
 
-    /**
-     * Quantidade em estoque do produto.
-     * Este campo não pode ser nulo, conforme a configuração da tabela no banco de dados.
-     */
-    @Column(name = "stock", nullable = false) // Define a coluna 'stock' na tabela
+    @Column(name = "stock", nullable = false) // Define a coluna 'stock' que não pode ser nula.
     private Integer stock;
 
     /**
-     * Construtor que cria um produto a partir dos dados fornecidos no DTO.
-     *
-     * @param registrarProductDTO DTO com os dados necessários para criar o produto
+     * Construtor que inicializa um produto com os dados do DTO.
+     * @param dados Dados para criar um novo produto (RegistroProductDTO).
      */
-    public Product(RegistrarProductDTO registrarProductDTO) {
-        this.name = registrarProductDTO.name(); // Atribui o nome do produto
-        this.description = registrarProductDTO.description(); // Atribui a descrição do produto
-        this.price = registrarProductDTO.price(); // Atribui o preço do produto
-        // Atribui o estoque do produto, caso fornecido, ou 0 se não informado
-        if (registrarProductDTO.stock() != null)
-            this.stock = registrarProductDTO.stock();
-        else
-            this.stock = 0;
+    public Product(RegistrarProductDTO dados) {
+        this.name = dados.name();
+        this.description = dados.description();
+        this.price = dados.price();
+        this.stock = dados.stock();
+
     }
 }
 

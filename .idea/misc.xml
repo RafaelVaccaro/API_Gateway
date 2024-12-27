@@ -7,6 +7,9 @@
     <file type="web" url="file://$PROJECT_DIR$/products-service" />
     <file type="web" url="file://$PROJECT_DIR$/users-service" />
   </component>
+  <component name="JavadocGenerationManager">
+    <option name="OUTPUT_DIRECTORY" value="$USER_HOME$/Documents/Profissional" />
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_23" project-jdk-name="corretto-17" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>

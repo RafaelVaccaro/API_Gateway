@@ -1,7 +1,6 @@
 package com.example.orders_service.infrastructure.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
 /**
  * Exceção personalizada para quando um usuário não for encontrado no sistema.

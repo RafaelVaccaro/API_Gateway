@@ -4,12 +4,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
-// A anotação @SpringBootApplication configura a aplicação para ser uma aplicação Spring Boot.
-// O atributo 'exclude' é utilizado para excluir a configuração automática do DataSource,
-// ou seja, o Spring Boot não tentará configurar um banco de dados, o que é útil para o API Gateway.
+/**
+ * Classe principal da aplicação de API Gateway.
+ */
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class}) // Autoconfigura o Spring Boot e desabilita manualmente qualquer configuração com banco de dados.
 public class ApiGatewayApplication {
 	public static void main(String[] args) {
+		// Chama o SpringApplication.run para iniciar o contexto Spring e a aplicação.
 		SpringApplication.run(ApiGatewayApplication.class, args);
 	}
 }

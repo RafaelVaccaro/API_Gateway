@@ -8,29 +8,35 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Serviço responsável pela lógica de negócios relacionada aos pedidos.
+ * Contém métodos para registrar, listar, deletar.
+ */
 @Service
 @RequiredArgsConstructor
 public class OrderService {
 
-    private final OrderJPARepository orderJPARepository;
-    private final OrderItemJPARepository orderItemJPARepository;
-    private final ProductConsumerService productConsumerService;
-    private final UserConsumerService userConsumerService;
+    private final OrderJPARepository orderJPARepository; // Repositório para operações de persistência de pedidos.
+    private final OrderItemJPARepository orderItemJPARepository; // Repositório para operações de persistência de itens de pedidos.
+    private final ProductConsumerService productConsumerService; // Serviço que consome requisições do serviço de produtos.
+    private final UserConsumerService userConsumerService; // Serviço que consome requisições do serviço de usuários.
 
     /**
      * Registra um pedido, validando usuário e produtos.
+     * Lança exceções caso o usuário ou produto não existam ou se houver estoque insuficiente.
      *
      * @param registroOrderDTO Dados para registrar o pedido.
      * @return O pedido registrado.
+     * @throws UserNotFoundException Se o usuário com o ID fornecido não for encontrado.
+     * @throws ProductNotFoundException Se algum produto com o ID fornecido não for encontrado.
      */
     public Order registrarOrder(RegistroOrderDTO registroOrderDTO) {
 
-        System.out.println("Verificando usuário com ID: " + registroOrderDTO.userId());
+        // Valída a existencia do usuario.
         if (!userConsumerService.validarUserPorId(registroOrderDTO.userId())) {
             throw new UserNotFoundException("User com ID: " + registroOrderDTO.userId() + " não existe");
         }
@@ -58,6 +64,7 @@ public class OrderService {
         // Cria o pedido com os itens e o preço total
         Order order = new Order(registroOrderDTO.userId(), totalPrice, orderItems);
 
+        // Salva o pedido
         Order savedOrder = orderJPARepository.save(order);
 
         // Associa os itens ao pedido salvo e os persiste
@@ -76,14 +83,8 @@ public class OrderService {
      * @return Paginação de pedidos.
      */
     public Page<ListarOrderDTO> listarOrders(Pageable pageable) {
-        // Filtra e deleta pedidos com usuários inválidos diretamente no banco de dados
-        List<Order> ordersToDelete = orderJPARepository.findAll()
-                .stream()
-                .filter(order -> !userConsumerService.validarUserPorId(order.getUserId()))
-                .collect(Collectors.toList());
 
-        // Deleta os pedidos com usuários inválidos
-        orderJPARepository.deleteAll(ordersToDelete);
+        limparPedidos();
 
         // Retorna os pedidos restantes com paginação
         return orderJPARepository.findAll(pageable).map(ListarOrderDTO::new);
@@ -117,8 +118,24 @@ public class OrderService {
      * @return Paginação de pedidos do usuário.
      */
     public Page<ListarOrderDTO> listarOrdersDeUserPorIdDTO(Long id, Pageable pageable) {
+
+        limparPedidos();
+
         Page<Order> ordersPage = orderJPARepository.findByUserId(id, pageable);
 
         return ordersPage.map(ListarOrderDTO::new);
+    }
+
+    /**
+     * Limpa os pedidos associados a usuários inválidos (não encontrados no sistema).
+     * O método filtra e deleta os pedidos com usuários que não existem no banco de dados.
+     */
+    public void limparPedidos() {
+        List<Order> ordersToDelete = orderJPARepository.findAll()
+                .stream()
+                .filter(order -> !userConsumerService.validarUserPorId(order.getUserId()))
+                .collect(Collectors.toList());
+
+        orderJPARepository.deleteAll(ordersToDelete);
     }
 }

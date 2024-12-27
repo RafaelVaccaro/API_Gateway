@@ -7,7 +7,7 @@ WORKDIR /app
 # Copiar o arquivo JAR gerado do build do Gradle
 COPY build/libs/users-service-0.0.1-SNAPSHOT.jar users-service.jar
 
-# Copiar o script wait-for-it.sh para o container
+# Copia o script 'wait-for-it.sh' para o container. Este script será usado para aguardar o banco de dados ficar disponível
 COPY wait-for-it.sh /wait-for-it.sh
 
 # Garantir que o script tenha permissão de execução

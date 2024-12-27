@@ -6,18 +6,19 @@ import jakarta.persistence.*;
 import lombok.*;
 
 /**
- * Representa um item dentro de um pedido (Order).
+ * Entidade que representa um item de produto no banco de dados.
+ * Mapeada com a tabela "order_items".
  */
-@Table(name = "order_items")
-@Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(of = "id")
+@Table(name = "order_items") // Define o nome da tabela no banco de dados.
+@Entity(name = "OrderItem") // Define o nome da entidade para o Hibernate
+@Data // Gera getters, setters, toString, equals, hashCode e construtor padrão automaticamente.
+@NoArgsConstructor // Gera um construtor sem argumentos.
+@AllArgsConstructor // Gera um construtor com todos os argumentos.
+@EqualsAndHashCode(of = "id") // Gera métodos equals e hashCode baseados no campo "id".
 public class OrderItem {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id // Marca o campo id como a chave primária.
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Define a geração automática do ID
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -32,12 +33,12 @@ public class OrderItem {
     private Integer quantity;
 
     /**
-     * Construtor que inicializa os campos com base no DTO de registro.
+     * Construtor para criar um item com os dados do DTO.
      *
-     * @param registroOrderItemDTO DTO com as informações do item de pedido.
+     * @param dados Dados para criar um novo item (RegistroOrderItemDTO).
      */
-    public OrderItem(RegistroOrderItemDTO registroOrderItemDTO) {
-        this.productId = registroOrderItemDTO.productId();
-        this.quantity = registroOrderItemDTO.quantity();
+    public OrderItem(RegistroOrderItemDTO dados) {
+        this.productId = dados.productId();
+        this.quantity = dados.quantity();
     }
 }

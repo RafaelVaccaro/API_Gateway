@@ -6,20 +6,19 @@ import jakarta.validation.Valid;
 import lombok.*;
 
 /**
- * Entidade que representa o usuário no banco de dados.
+ * Entidade que representa um usuário no banco de dados.
  * Mapeada com a tabela "users", que armazena as informações dos usuários.
  */
 @Table(name = "users") // Define o nome da tabela no banco de dados.
-@Entity(name = "User") // Define o nome da entidade, que será usada pelo JPA para mapear os dados da tabela "users".
-@Getter // Gera automaticamente os métodos de acesso (getters).
-@Setter // Gera automaticamente os métodos de modificação (setters).
+@Entity(name = "User") // Define o nome da entidade para o Hibernate
+@Data // Gera getters, setters, toString, equals, hashCode e construtor padrão automaticamente.
 @NoArgsConstructor // Gera um construtor sem argumentos.
 @AllArgsConstructor // Gera um construtor com todos os argumentos.
 @EqualsAndHashCode(of = "id") // Gera métodos equals e hashCode baseados no campo "id".
 public class User {
 
     @Id // Marca o campo id como a chave primária.
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Define que o valor de id será gerado automaticamente pelo banco de dados.
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Define a geração automática do ID
     private Long id;
 
     @Column(name = "name", nullable = false) // Define a coluna "name" que não pode ser nula.
@@ -35,19 +34,5 @@ public class User {
     public User(RegistroUserDTO dados) {
         this.name = dados.name();
         this.email = dados.email();
-    }
-
-    /**
-     * Atualiza as informações do usuário com os dados do DTO,
-     * somente campos não nulos no DTO serão atualizados.
-     * @param registroUserDTO DTO contendo as informações a serem atualizadas.
-     */
-    public void atualizarinfo(@Valid RegistroUserDTO registroUserDTO) {
-        // Atualiza o nome, se não for nulo.
-        if (registroUserDTO.name() != null)
-            this.name = registroUserDTO.name();
-        // Atualiza o e-mail, se não for nulo.
-        if (registroUserDTO.email() != null)
-            this.email = registroUserDTO.email();
     }
 }

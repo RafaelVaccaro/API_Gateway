@@ -13,7 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * Controlador responsável pelas operações de produtos.
+ * Controlador responsável pela gestão de produtos.
+ * Exposição de endpoints REST para operações CRUD de produtos.
  */
 @RestController
 @RequestMapping("/product")
@@ -39,7 +40,7 @@ public class ProductController {
      * Endpoint para listar produtos com paginação.
      *
      * @param pageable Configurações de paginação.
-     * @return Uma página de produtos.
+     * @return Página de produtos.
      */
     @GetMapping
     public Page<ListarProductDTO> listar(@PageableDefault(size = 10, sort = {"id"}) Pageable pageable) {
