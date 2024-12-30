@@ -124,3 +124,7 @@ Cada serviço é independente e gerencia uma parte específica do sistema.
    ```bash
    git clone https://github.com/RafaelVaccaro/API_Gateway.git
    cd API_Gateway
+   docker-compose down
+   docker-compose build
+   docker-compose up -d
+   
