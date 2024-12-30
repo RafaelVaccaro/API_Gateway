@@ -40,7 +40,7 @@ public class UserController {
      * @param paginacao Parâmetro de paginação (tamanho e ordenação dos resultados).
      * @return Página de usuários.
      */
-    @GetMapping // Define que esse método responderá às requisições GET para a URL '/user'.
+    @GetMapping
     public Page<ListarUserDTO> listar(@PageableDefault(size = 10, sort = {"id"}) Pageable paginacao) {
         return userService.listar(paginacao);
     }

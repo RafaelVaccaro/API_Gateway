@@ -55,6 +55,7 @@ public class OrderController {
      * @param id ID do pedido a ser deletado.
      */
     @DeleteMapping("/{id}")
+    @Transactional
     public void deletarOrder(@PathVariable Long id) {
         orderService.deletarOrder(id);
     }
