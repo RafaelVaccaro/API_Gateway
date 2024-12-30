@@ -123,4 +123,4 @@ Cada serviço é independente e gerencia uma parte específica do sistema.
 1. Clone este repositório:
    ```bash
    git clone https://github.com/RafaelVaccaro/API_Gateway.git
-   cd seu-repositorio
+   cd API_Gateway
