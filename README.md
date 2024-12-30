@@ -18,43 +18,43 @@ Cada serviço é independente e gerencia uma parte específica do sistema.
 ## **Users-Service**
 **Descrição:** Gerencia os dados dos usuários do sistema.
 
-**Principais Funcionalidades:**
-- Registro de novos usuários.
-- Atualização dos dados cadastrais dos usuários.
-- Consulta de informações de usuários.
-- Deleção ou desativação de contas.
-
 **Endpoints:**
-- **POST** `/users` - Registrar um novo usuário.
-- **GET** `/users/{id}` - Consultar um usuário específico.
-- **PUT** `/users/{id}` - Atualizar dados de um usuário.
-- **DELETE** `/users/{id}` - Desativar/Deletar um usuário.
+- **POST** `/user` - Registra um novo usuário.
+  **Exemplo de body:**
+  ```json
+  {
+    "name": "Rafael",
+    "email": "rafavaccaro@gmail.com"
+  }
+- **GET** `/user` - Lista usuários registrados.
+- **GET** `/user/{id}` - Valída a existência de um usuário pelo ID.
+- **DELETE** `/user/{id}` - Deleta um usuário.
 
 **Banco de Dados:**
 - **Tabela Users**:
   - `id`: Identificador único.
   - `name`: Nome do usuário.
   - `email`: Email do usuário.
-  - `password`: Senha do usuário.
-  - `status`: Status da conta (ativo/inativo).
 
 ---
 
 ## **Products-Service**
-**Descrição:** Gerencia os produtos disponíveis para venda ou uso.
-
-**Principais Funcionalidades:**
-- Cadastro de novos produtos.
-- Atualização de informações dos produtos (preço, estoque, etc.).
-- Listagem e consulta de produtos.
-- Controle de estoque.
+**Descrição:** Gerencia os dados dos produtos do sistema.
 
 **Endpoints:**
-- **POST** `/products` - Adicionar um novo produto.
-- **GET** `/products` - Listar todos os produtos.
-- **GET** `/products/{id}` - Consultar detalhes de um produto.
-- **PUT** `/products/{id}` - Atualizar informações de um produto.
-- **DELETE** `/products/{id}` - Remover um produto.
+- **POST** `/product` - Registra um novo produto.
+  **Exemplo de body:**
+  ```json
+  {
+    "name" : "Smartphone",
+    "description" : "XYZ's smartphone",
+    "price" : 5000,
+    "stock" : 100
+  }
+- **GET** `/product` - Lista todos os produtos.
+- **GET** `/product/{id}` - Valída a existência de um produto pelo ID.
+- **GET** `/product/price/{id}` - Obtem o preço de um produto pelo ID.
+- **DELETE** `/product/{id}` - Deleta um produto.
 
 **Banco de Dados:**
 - **Tabela Products**:
@@ -63,66 +63,64 @@ Cada serviço é independente e gerencia uma parte específica do sistema.
   - `description`: Descrição do produto.
   - `price`: Preço do produto.
   - `stock`: Quantidade em estoque.
-  - `category`: Categoria do produto.
 
 ---
 
 ## **Orders-Service**
-**Descrição:** Gerencia os pedidos feitos pelos usuários.
-
-**Principais Funcionalidades:**
-- Criação de novos pedidos.
-- Atualização do status do pedido.
-- Listagem de pedidos de um usuário.
-- Histórico de pedidos.
+**Descrição:** Gerencia os dados dos pedidos do sistema.
 
 **Endpoints:**
-- **POST** `/orders` - Criar um novo pedido.
-- **GET** `/orders` - Listar todos os pedidos.
-- **GET** `/orders/{id}` - Consultar detalhes de um pedido.
-- **PUT** `/orders/{id}` - Atualizar o status de um pedido.
-- **DELETE** `/orders/{id}` - Cancelar um pedido.
+- **POST** `/order` - Registra um novo pedido e seus respectivos itens de pedido.
+  **Exemplo de body:**
+  ```json
+  {
+    "userId": 1,
+    "orderItems": [
+      {
+        "productId": 1,
+        "quantity": 50
+      }
+    ]
+  }
+- **GET** `/order` - Lista todos os pedidos.
+- **GET** `/order/produtosDePedido/{id}` - Lista todos produtos de um pedido pelo ID.
+- **GET** `/order/pedidosDeUsuario/{id}` - Lista todos pedidos de um usuário pelo ID.
+- **DELETE** `/order/{id}` - Deleta um pedido.
 
 **Banco de Dados:**
 - **Tabela Orders**:
   - `id`: Identificador único do pedido.
   - `user_id`: ID do usuário que fez o pedido.
   - `total_price`: Valor total do pedido.
-  - `status`: Status do pedido (em andamento, concluído, cancelado).
+  - `orderItems`: Lista de itens do pedido.
   - `created_at`: Data de criação do pedido.
 - **Tabela Order_Items**:
   - `id`: Identificador único do item.
   - `order_id`: ID do pedido associado.
   - `product_id`: ID do produto associado.
   - `quantity`: Quantidade do produto.
-  - `price`: Preço total do item.
 
 ---
 
 ## **API-Gateway**
 **Descrição:** Centraliza o acesso e redireciona as requisições para os microserviços apropriados.
 
-**Principais Funcionalidades:**
-- Roteamento de requisições para os serviços (`users-service`, `products-service`, `orders-service`).
-- Gerenciamento de autenticação e autorização.
-- Políticas de segurança (CORS, throttling, etc.).
-
 **Configurações de Roteamento:**
-- `/users/**` -> Encaminha para o `users-service`.
-- `/products/**` -> Encaminha para o `products-service`.
-- `/orders/**` -> Encaminha para o `orders-service`.
+- `/user/**` -> Encaminha para o `users-service`.
+- `/product/**` -> Encaminha para o `products-service`.
+- `/order/**` -> Encaminha para o `orders-service`.
 
 ---
 
 ## Como Rodar o Projeto
 
 ### **Pré-requisitos**
-- **Docker**: Certifique-se de que o Docker e o Docker Compose estão instalados.
-- **Java**: Versão 22 ou superior.
+- **Docker**: Certifique-se de que o Docker está instalados.
+- **Java**: Versão 17 ou superior.
 - **Gradle**: Configurado globalmente no sistema.
 
 ### **Passos:**
 1. Clone este repositório:
    ```bash
-   git clone https://github.com/seu-usuario/seu-repositorio.git
-   cd seu-repositorio
+   git clone https://github.com/RafaelVaccaro/API_Gateway.git
+   cd API_Gateway
