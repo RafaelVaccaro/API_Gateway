@@ -22,7 +22,7 @@ public class User {
     private Long id;
 
     @Column(name = "name", nullable = false) // Define a coluna "name" que não pode ser nula.
-    private String name;
+    private String nome;
 
     @Column(name = "email", nullable = false, unique = true) // Define a coluna "email" como única e não nula.
     private String email;
@@ -32,7 +32,7 @@ public class User {
      * @param dados Dados para criar um novo usuário (RegistroUserDTO).
      */
     public User(RegistroUserDTO dados) {
-        this.name = dados.name();
+        this.nome = dados.nome();
         this.email = dados.email();
     }
 }

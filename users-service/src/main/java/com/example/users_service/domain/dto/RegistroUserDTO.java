@@ -10,7 +10,7 @@ import lombok.Builder;
  */
 @Builder
 public record RegistroUserDTO(
-        String name,
+        String nome,
         @Email
         String email
 ) {
@@ -22,7 +22,7 @@ public record RegistroUserDTO(
          */
         public static RegistroUserDTO toDTO(User user) {
                 return RegistroUserDTO.builder() // Inicia o builder para criar uma instância de RegistroUserDTO.
-                        .name(user.getName())
+                        .nome(user.getNome())
                         .email(user.getEmail())
                         .build(); // Constrói o objeto DTO.
         }
